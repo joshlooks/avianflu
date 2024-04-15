@@ -7,7 +7,7 @@ ts = np.linspace(0, 30, 1000)
 inits = np.array([1e9, 0, 0, 40000, 1e9, 0, 0, 0, 0])
 # Parameters b_u, b_l, g, c, d, p_u, p_l, gamma, k, f, r, D, a
 # States are U1, E1, I1, V1, U2, E2, I2, V2, X
-p = [1.9e-9, 1.9e-7, 4, 2, 5.2, 1, 1, 0.15, 20, 2.8e-6, 0.27, 1, 0.01]
+p = [1.9e-9, 1.9e-7, 4, 2, 5.2, 10, 1, 0.15, 20, 2.8e-6, 0.27, 0.5, 0.01]
 results = simulate.solve_model(diffusion_advection.model, inits, ts, (p,))
 
 #Eclipsed, Infected in URT
