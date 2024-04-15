@@ -2,3 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
+*.pyc
+**/__pycache__/
+*.pyo
