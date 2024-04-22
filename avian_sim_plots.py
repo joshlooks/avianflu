@@ -54,8 +54,8 @@ else:
     #Dead and infected cells
     plt.semilogy(ts, results[:,2], label="IU", color="#001380")
     plt.semilogy(ts, results[:,6], label="IL", color="#800000")
-    plt.semilogy(ts, Cell_Count_U - results[:,0], label="DU", color="#6680FF")
-    plt.semilogy(ts, Cell_Count_L - results[:,4], label="DL", color="#FF8080")
+    plt.semilogy(ts, Cell_Count_U - results[:,0], "--", label="DU", color="#6680FF")
+    plt.semilogy(ts, Cell_Count_L - results[:,4], "--", label="DL", color="#FF8080")
     plt.xlabel("Days post infection", fontsize=12)
     plt.ylabel("Number of cells", fontsize=12)
     plt.legend(fontsize=12)
