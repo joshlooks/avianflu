@@ -1,8 +1,10 @@
 library(GGally)
 library(tidyverse)
 library(here)
+require(matrixStats)
+require(latex2exp)
 source(paste0(here(),'/ABC/abc_helper.R'))
-post_tibble <- read_csv('test_7.csv')
+post_tibble <- read_csv('log_7.csv')
 colnames(post_tibble) <- c("bu","bl","pu","pl","gamma","D","a")
 
 post_density <- ggpairs(data=post_tibble, 
@@ -10,15 +12,8 @@ post_density <- ggpairs(data=post_tibble,
         lower = list(continuous = "density"))
 NRuns <- dim(post_tibble)[1]
 ts <- c(401,401,501,501,501,601,601,601,601,601,601,701,701,701,701,801)
-Vlres <- matrix(0,nrow=NRuns,ncol=length(ts))
-for(i in 1:NRuns){
-  # Run current realisation
-  theta = post_tibble[i,]
-  res = run_model(theta)
-  ts <- c(401,401,501,501,501,601,601,601,601,601,601,701,701,701,701,801)
-  Vlres[i,] <- res$Vu[ts]
-}
-
+Vures <- as.matrix(read_csv('post_predictive.csv',col_names = FALSE))
+times <- seq(0,10,10/1000)
 data_days <- c(4,4,5,5,5,6,6,6,6,6,6,7,7,7,7,8)
 days_loads <- 10^c(7.2,5.40,5.1,7.05,7.7,7.68,7.85,7.73,7.01,6.073,4.45,5.894,5.5356,4.325,3.959,6.548)
 Datatibble <- tibble(data_days, days_loads)
@@ -37,4 +32,4 @@ vuplot <- ggplot(Vutibble, aes(t, Med)) +
        y = TeX("Viral load (TCID$_{50}$)/ml")) +
   scale_y_continuous(trans='log10') + theme_bw(base_size=20) +
   geom_point(aes(x=data_days,y=days_loads),color="#6680FF",data=Datatibble)
-ggsave("Plots/Vu_post.pdf",plot = vlplot, width = 20,  height = 10,  units = "cm")
+ggsave("Plots/Vu_posterior.pdf",plot = vuplot, width = 20,  height = 10,  units = "cm")

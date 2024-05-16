@@ -10,7 +10,8 @@ N <- 1000
 M <- 50
 
 # Epsilon values for temporal data 
-etol <- c(1e18,5e17,1e17,5e16,2e16,1.5e16,1.35e16)  
+# etol <- c(1e18,5e17,1e17,5e16,2e16,1.5e16,1.35e16)
+etol <- c(150,145,140,135,130,127.5,125)  
 
 # Number of generations
 G <- length(etol)
@@ -19,8 +20,8 @@ G <- length(etol)
 n <- 1
 
 #  Lower and upper boundaries for priors
-lm.low<-c(1e-9,1e-8,1e-4,1e-4,1e-6,1e-3,1e-3)
-lm.upp<-c(1e-5,1e-5,1,1,2e-3,1,1)
+lm.low<-c(1e-8,1e-7,1e-4,1e-4,1e-6,1e-3,1e-3)
+lm.upp<-c(1e-6,1e-5,1,1,2e-3,1,1)
 
 
 # Empty matrices to store results (population plus 5 model parameters)
@@ -57,7 +58,8 @@ for(g in 1:G){
     if(prior.non.zero(par)) {
       # Set number of accepted simulations to zero
       m<-0
-      D_star <- dist_fun(par)
+      # D_star <- dist_fun(par)
+      D_star <- log_dist_fun(par)
       if (D_star <= etol[g]){
         # Store results
         res.new[i,]<-par  
@@ -84,5 +86,5 @@ for(g in 1:G){
   res.old<-res.new
   w.old<-w.new/sum(w.new)
   
-  write.csv(res.new, file = paste("test_",g,".csv",sep=""), row.names=FALSE)
+  write.csv(res.new, file = paste("log_",g,".csv",sep=""), row.names=FALSE)
 }

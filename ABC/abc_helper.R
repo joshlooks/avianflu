@@ -64,7 +64,7 @@ dist_fun <- function(theta){
   return(sum((y-mresults)^2))
 }
 
-run_model <- function(theta){
+log_dist_fun <- function(theta){
   ICs <- c("Tu" = 4e8,"Eu"=0,"Iu"=0,"Vu"=1.3e3,"Tl"=6.25e9,"El"=0,"Il"=0,"Vl"=0,"X"=0)
   para <- list("bu" = theta[1], "bl" = theta[2], "g" = 4, "c" = 2, "d" = 5.2, "pu" = theta[3], 
                "pl" = theta[4], "gamma" = theta[5], "k" = 20, "f" = 0.56*2.8e-7/7, 
@@ -73,7 +73,17 @@ run_model <- function(theta){
   Classes <- ODE_host_model(para, ICs)
   mresults <- Classes$Vu[ts]
   y = 10^c(7.2,5.40,5.1,7.05,7.7,7.68,7.85,7.73,7.01,6.073,4.45,5.894,5.5356,4.325,3.959,6.548)
-  return(Classes)
+  return(sum((log(y)-log(mresults))^2))
+}
+
+run_model <- function(theta){
+  ICs <- c("Tu" = 4e8,"Eu"=0,"Iu"=0,"Vu"=1.3e3,"Tl"=6.25e9,"El"=0,"Il"=0,"Vl"=0,"X"=0)
+  para <- list("bu" = theta[1], "bl" = theta[2], "g" = 4, "c" = 2, "d" = 5.2, "pu" = theta[3], 
+               "pl" = theta[4], "gamma" = theta[5], "k" = 20, "f" = 0.56*2.8e-7/7, 
+               "r" = 0.27/7, "D"=theta[6], "a"=theta[7])
+  ts <- c(401,401,501,501,501,601,601,601,601,601,601,701,701,701,701,801)
+  Classes <- ODE_host_model(para, ICs)
+  return(Classes$Vu)
 }
 
 ##############################################################################
