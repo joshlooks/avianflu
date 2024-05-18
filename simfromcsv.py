@@ -67,18 +67,28 @@ for i in range(0, numrows):
     dDU = c * V_U + gamma * betaU * T_U * V_U
     dDL = (c + k * X) * V_L + gamma * betaL * T_L * V_L
 
-    NU = integrate.trapezoid(dNU, ts)
-    NL = integrate.trapezoid(dNL, ts)
-    DU = integrate.trapezoid(dDU, ts)
-    DL = integrate.trapezoid(dDL, ts)
+    NU_List = []
+    NL_List = []
+    DU_List = []
+    DL_List = []
+    for i in range(0,len(ts)-1):
+        NU_List.append(integrate.trapezoid(dNU[0:i+1], ts[0:i+1]))
+        NL_List.append(integrate.trapezoid(dNL[0:i+1], ts[0:i+1]))
+        DU_List.append(integrate.trapezoid(dDU[0:i+1], ts[0:i+1]))
+        DL_List.append(integrate.trapezoid(dDL[0:i+1], ts[0:i+1]))
+    NU = np.array(NU_List)
+    NL = np.array(NL_List)
+    DU = np.array(DU_List)
+    DL = np.array(DL_List)
     
     #viral growth rate in upper and lower
     rep_U_List.append(1+ (NU[1:] - NU[0:-1]) / V_U[0:-1])
-    rep_L_List.append(1+ (NL[1:] - NL[0:-1]) / V_L[0:-1])
+    rep_L_List.append(np.concatenate(np.ones(1),(1+ (NL[2:] - NL[1:-1]) / V_L[1:-1])))
+
     
     #viral death rate in upper and lower
     kill_U_List.append((DU[1:] - DU[0:-1]) / V_U[0:-1])
-    kill_L_List.append((DL[1:] - DL[0:-1]) / V_L[0:-1])
+    kill_L_List.append(np.concatenate(np.zeros(1),((DL[2:] - DL[1:-1]) / V_L[1:-1])))
 
 
     VUList.append(results[:,3])
