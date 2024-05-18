@@ -9,10 +9,10 @@ from scipy import integrate
 gen = 0.5
 delta_t = 0.001
 
-df = pd.read_csv('data.csv')
+df = np.genfromtxt("data.csv",delimiter=",")
 
-numrows = len(df)
-numcols = len(df[0])
+numrows = np.shape(df)[0]
+numcols = np.shape(df)[1]
 
 TList = []
 VList = []
@@ -27,9 +27,7 @@ R_List = []
 
 #need to check rows vs columns
 for i in range(0, numrows):
-    #Need to work these out
-
-    params =  [df[1], df[2], 4, 2, 5.2, df[3], df[4], df[5], 20, 0.56*2.8e-7/7, 0.27/7, df[6], df[7]]
+    params =  [df[i,1], df[i,2], 4, 2, 5.2, df[i,3], df[i,4], df[i,5], 20, 0.56*2.8e-7/7, 0.27/7, df[i,6], df[i,7]]
 
     Cell_Count_U = 4e8
     Cell_Count_L = 6.25e9
