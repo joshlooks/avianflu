@@ -103,7 +103,8 @@ for i in range(0, numrows):
         rval = 1
         for j in range(count, count + timesteps_per_gen):
             rval *= R[j]
-        reps.append(rval)
+        reps.append(np.sqrt(rval))
+        reps.append(np.sqrt(rval))
         count += timesteps_per_gen
     R_List.append(reps)
     
