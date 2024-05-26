@@ -1,4 +1,4 @@
-library(deSolve) #Access package deSolve - note you will need install first if you haven't already
+library(deSolve)
 
 ##############################################################################
 #Define the ODE system functions
@@ -50,7 +50,7 @@ para <- list("bu" = 4.066e-7, "bl" = 3.67e-7, "g" = 4, "c" = 2, "d" = 5.2, "pu" 
              "pl" = 0.0964, "gamma" = 0.00346, "k" = 20, "f" = 0.56*2.8e-7/7, "r" = 0.27/7, "D"=0.213, "a"=0.147)
 
 ##############################################################################
-#Define the distance function and a model run function
+# Define the distance function and a model run function
 #############################################################################
 dist_fun <- function(theta){
   ICs <- c("Tu" = 4e8,"Eu"=0,"Iu"=0,"Vu"=1.3e3,"Tl"=6.25e9,"El"=0,"Il"=0,"Vl"=0,"X"=0)
