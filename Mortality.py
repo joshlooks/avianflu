@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+
 def logint(v,t):
     #we return the integral of the logarithm
     return np.trapz(np.log(v),t)
@@ -40,14 +41,14 @@ def logintlist(v,t):
 def lifespan(v,t,M):
     #If the integral never exceeds M, the host never dies, so the whole time range is the viral lifespan
     if M > logint(v,t):
-        return t[-1]
+        return [t[-1],False]
     else:
         #otherwise, we work out when the host dies, and return that
         mylist = logintlist(v,t)
         ind = np.where(mylist >= M)[0][0]
         alpha = (M - mylist[ind-1]) / (mylist[ind] - mylist[ind-1])
         timeofdeath = t[ind-1] + alpha * (t[ind] - t[ind-1])
-        return timeofdeath
+        return [timeofdeath,True]
 
 #A function to cut off simulations upon going below a certain value
 def cutoff(v,t,endval):
@@ -93,49 +94,15 @@ def ViralLifespanDist(V_List, T_List, mortality_rate,end_viral_load):
 
     #calculate a value of M
     M_val = findM(newV,newT,mortality_rate)
+    print(M_val)
 
     #get lifespans for each simulation
+    death_list = []
     lifespans = []
     for i in range(0,numsims):
-        lifespans.append(lifespan(newV[i],newT[i],M_val))
+        lifespanoutput = lifespan(newV[i],newT[i],M_val)
+        lifespans.append(lifespanoutput[0])
+        death_list.append(lifespanoutput[1])
 
     #return the lifespans
-    return lifespans
-
-
-
-# #Testing our function
-
-# #Make some generic T and V
-# T = np.linspace(0,50,1000)
-# V = T * np.exp(1-T) + 1/(T+2)**10
-
-# Ts = []
-# Vs = []
-# #Make copies, with varying magnitudes
-# N = 10000
-# for i in range(0,N):
-#     Ts.append(T)
-#     randomval = np.random.normal(loc=8.5, scale=1)
-#     Vs.append(10**randomval * V)
-
-
-# #Plot these
-# for i in range(0,len(Vs)):
-#     plt.semilogy(Ts[i],Vs[i])
-# plt.show()
-
-# #Plot these with cutoff
-# for i in range(0,len(Vs)):
-#     V,T = cutoff(Vs[i],Ts[i],10**4)
-#     plt.semilogy(T,V)
-# plt.semilogy(np.linspace(0,30,10), 10**4 * np.ones(10))
-# plt.show()
-
-# #Calculate lifespans
-# mydist = ViralLifespanDist(Vs,Ts,0.5,10**4)
-
-# plt.hist(mydist, bins = int(np.sqrt(N)))
-# plt.show()
-
-
+    return [lifespans,death_list]
