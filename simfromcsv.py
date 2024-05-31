@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 
-def getBPMparams(gen):
+def getBPMparams(gen, m_value=0.53):
 
     delta_t = 0.001
 
@@ -110,7 +110,7 @@ def getBPMparams(gen):
         TList.append(ts)
 
     #contains all the lifespans from all the simulations
-    LifespansOutput = Mortality.ViralLifespanDist(VList, TList, 0.53, 10**4)
+    LifespansOutput = Mortality.ViralLifespanDist(VList, TList, m_value, 10**4)
     Lifespans = LifespansOutput[0]
     Death_List = LifespansOutput[1]
 

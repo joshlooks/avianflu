@@ -20,7 +20,7 @@ def findM(V_lists, T_lists, mort_rate):
     Int_Lists.sort()
 
     #We find the index location to seperate between alive and dead
-    boundaryloc = (list_size-1) * mort_rate
+    boundaryloc = (list_size-1) * (1-mort_rate)
     boundaryind = int(boundaryloc)
 
     #We use linear interpolation to find the M value
