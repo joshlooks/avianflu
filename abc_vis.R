@@ -1,35 +1,40 @@
 library(GGally)
 library(tidyverse)
 library(here)
-require(matrixStats)
 require(latex2exp)
-source(paste0(here(),'/ABC/abc_helper.R'))
-post_tibble <- read_csv('log_7.csv')
+library(KScorrect)
+post_tibble <- read_csv('Posterior/log_7.csv')
 colnames(post_tibble) <- c("bu","bl","pu","pl","gamma","D","a")
+post_tibble['type'] <- 'Posterior'
+post_tibble['type'] <- as.factor(post_tibble$type)
 
-post_density <- ggpairs(data=post_tibble, 
-        upper = list(continuous = "density"),
-        lower = list(continuous = "density"))
-NRuns <- dim(post_tibble)[1]
-ts <- c(401,401,501,501,501,601,601,601,601,601,601,701,701,701,701,801)
-Vures <- as.matrix(read_csv('post_predictive.csv',col_names = FALSE))
-times <- seq(0,10,10/1000)
-data_days <- c(4,4,5,5,5,6,6,6,6,6,6,7,7,7,7,8)
-days_loads <- 10^c(7.2,5.40,5.1,7.05,7.7,7.68,7.85,7.73,7.01,6.073,4.45,5.894,5.5356,4.325,3.959,6.548)
-Datatibble <- tibble(data_days, days_loads)
-colnames(Datatibble) <- c("t","load")
+#  Lower and upper boundaries for priors
+lm.low<-c(1e-8,1e-7,1e-4,1e-4,1e-6,1e-3,1e-3)
+lm.upp<-c(1e-6,1e-5,1,1,2e-3,1,1)
 
-Vuresquants <- colQuantiles(Vures, probs = c(0.025,0.975))
-Vuresmed <- colQuantiles(Vures, probs = 0.5)
+prior_tibble <- tibble(bu = rlunif(1000,min=lm.low[1], max=lm.upp[1],base=10),
+                       bl = rlunif(1000,min=lm.low[2], max=lm.upp[2],base=10),
+                       pu = rlunif(1000,min=lm.low[3], max=lm.upp[3],base=10),
+                       pl = rlunif(1000,min=lm.low[4], max=lm.upp[4],base=10),
+                       gamma = rlunif(1000,min=lm.low[5], max=lm.upp[5],base=10),
+                       D = rlunif(1000,min=lm.low[6], max=lm.upp[6],base=10),
+                       a = rlunif(1000,min=lm.low[7], max=lm.upp[7],base=10),
+                )
+prior_tibble['type'] <- as.factor('Prior')
+post_density <- ggpairs(data=post_tibble,
+                        columnLabels = c("beta[U]","beta[L]","p[U]","p[L]","gamma","D","a"), labeller="label_parsed",
+                        upper = list(continuous = ggally_density),
+                        lower = list(continuous = ggally_density),
+                        diag = list(continuous = ggally_densityDiag)
+                        ) + theme(panel.spacing = unit(2, "lines"))
 
-Vutibble <- tibble(times,Vuresquants[,1],Vuresquants[,2],Vuresmed)
-colnames(Vutibble) <- c("t","LI","UI","Med")
-vuplot <- ggplot(Vutibble, aes(t, Med)) +                                      
-  geom_line(size = 1) + 
-  geom_ribbon(aes(ymin=LI, ymax=UI), alpha=0.1, fill = rgb(0.502,0,0,0.5),  
-              color = rgb(0.502,0,0), linetype = "dotted") + 
-  labs(x = "Time (days)",
-       y = TeX("Viral load (TCID$_{50}$)/ml")) +
-  scale_y_continuous(trans='log10') + theme_bw(base_size=20) +
-  geom_point(aes(x=data_days,y=days_loads),color="#6680FF",data=Datatibble)
-ggsave("Plots/Vu_posterior.pdf",plot = vuplot, width = 20,  height = 10,  units = "cm")
+test <- bind_rows(post_tibble,prior_tibble)
+post_density_prior <- ggpairs(data=test, columns = 1:7, mapping = aes(color = test$type),
+                        columnLabels = c("beta[U]","beta[L]","p[U]","p[L]","gamma","D","a"), labeller="label_parsed",
+                        upper = list(continuous = ggally_density, rescale = TRUE),
+                        lower = list(continuous = ggally_density, rescale = TRUE),
+                        diag = list(continuous = ggally_densityDiag, rescale = TRUE)
+) + theme(panel.spacing = unit(2, "lines"))
+
+ggsave("Plots/Param_posterior_prior.pdf",plot = post_density_prior, width = 40,  height = 40,  units = "cm")
+ggsave("Plots/Param_posterior.pdf",plot = post_density, width = 40,  height = 40,  units = "cm")
