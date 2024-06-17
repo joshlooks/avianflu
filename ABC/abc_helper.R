@@ -38,7 +38,7 @@ ODE_host_model <- function(para, ICs) {
   t_seq <- seq(0, 10, by = 0.01)
   
   #Solve the ODEs using the ode function from deSolve package
-  result <- ode(y = ICs, times = t_seq, func = diff_host_model, parms = para, method = "ode45")
+  result <- ode(y = ICs, times = t_seq, func = diff_host_model, parms = para)#, method = "ode45")
   
   #Convert the result to a data frame
   Classes <- data.frame(result)
