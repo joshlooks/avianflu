@@ -3,7 +3,7 @@ library(tidyverse)
 library(here)
 require(latex2exp)
 library(KScorrect)
-post_tibble <- read_csv('Posterior/log_7.csv')
+post_tibble <- read_csv('Posterior/log_adaptive_4.csv')
 colnames(post_tibble) <- c("bu","bl","pu","pl","gamma","D","a")
 post_tibble['type'] <- 'Posterior'
 post_tibble['type'] <- as.factor(post_tibble$type)
@@ -36,5 +36,18 @@ post_density_prior <- ggpairs(data=test, columns = 1:7, mapping = aes(color = te
                         diag = list(continuous = ggally_densityDiag, rescale = TRUE)
 ) + theme(panel.spacing = unit(2, "lines"))
 
-ggsave("Plots/Param_posterior_prior.pdf",plot = post_density_prior, width = 40,  height = 40,  units = "cm")
-ggsave("Plots/Param_posterior.pdf",plot = post_density, width = 40,  height = 40,  units = "cm")
+ggsave("Plots/Param_posterior_adaptive_prior.pdf",plot = post_density_prior, width = 40,  height = 40,  units = "cm")
+ggsave("Plots/Param_posterior_adapative.pdf",plot = post_density, width = 40,  height = 40,  units = "cm")
+
+early_peak <- read_csv('Results/early_peak_indices.csv',col_names=0)
+late_peak <- read_csv('Results/late_peak_indices.csv',col_names=0)
+groups <- rep('early',1000)
+groups[t(late_peak)] <- 'late'
+post_tibble['peak_time'] <- as.factor(groups)
+post_density_peak <- ggpairs(data=post_tibble, columns = 1:7, mapping = aes(color = post_tibble$peak_time),
+                              columnLabels = c("beta[U]","beta[L]","p[U]","p[L]","gamma","D","a"), labeller="label_parsed",
+                              upper = list(continuous = ggally_density, rescale = TRUE),
+                              lower = list(continuous = ggally_density, rescale = TRUE),
+                              diag = list(continuous = ggally_densityDiag, rescale = TRUE)
+) + theme(panel.spacing = unit(2, "lines"))
+ggsave("Plots/Param_posterior_adaptive_peak.pdf",plot = post_density_peak, width = 40,  height = 40,  units = "cm")
