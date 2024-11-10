@@ -11,7 +11,7 @@ M <- 50
 
 # Epsilon values for temporal data 
 # etol <- c(1e18,5e17,1e17,5e16,2e16,1.5e16,1.35e16)
-etol <- 150
+etol <- 240
 elist <- rep(0,N)
 
 # Number of generations

@@ -8,11 +8,11 @@ from pathlib import Path
 
 
 
-def getBPMparams(gen, m_value=0.53):
+def getBPMparams(gen,file='data.csv', m_value=0.53):
 
     delta_t = 0.001
 
-    path = Path(__file__).parent.absolute() / 'data.csv'
+    path = Path(__file__).parent.absolute() / file
 
     df = np.genfromtxt(path,delimiter=",")[1:]
 
