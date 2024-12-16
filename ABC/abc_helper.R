@@ -21,7 +21,7 @@ diff_host_model <- function(t, pop, para){
   dEu <- para$bu*Tu*Vu - para$g*Eu
   dIu <- para$g*Eu - para$d*Iu
   dVu <- para$pu*Iu - para$c*Vu - para$gamma*para$bu*Tu*Vu - para$D*(Vu-Vl) + para$a*Vl
-  dTl <- -para$pl*Tl*Vl
+  dTl <- -para$bl*Tl*Vl
   dEl <- para$bl*Tl*Vl - para$g*El
   dIl <- para$g*El - para$d*Il
   dVl <- para$pl*Il - para$c*Vl - para$gamma*para$bl*Tl*Vl + para$D*(Vu-Vl) - para$a*Vl - para$k*Vl*X
