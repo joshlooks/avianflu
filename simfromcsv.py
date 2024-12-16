@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 
-def getBPMparams(gen,file='data.csv', m_value=0.53):
+def getBPMparams(gen,file='log_adaptive_added_10.csv', m_value=0.53):
 
     delta_t = 0.001
 
