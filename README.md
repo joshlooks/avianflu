@@ -7,11 +7,11 @@ Other authors (contributed equally): Jonathan Carruthers, Thomas Finnie, Matt J.
 ## Running the models
 The `Models` directory contains a selection of different models investigated in this project. The final 'version' can be found using `Models.diffusion_advection`.
 
-The branching process model code and run scripts can be found in the `bpm.ipynb` Jupyter notebook. This calls functions from the `Mortality.py` and `simfromcsv.py` files and makes use of `data.csv` (a version of the final parameter posterior). Sensitivity analysis to a lower case fatality rate is found in the `bpm_lower_mortality.ipynb` Jupyter notebook.
+The branching process model code and run scripts can be found in the `bpm_final.ipynb` Jupyter notebook. This calls functions from the `Mortality.py` and `simfromcsv.py` files and makes use of `data.csv` (a version of the final parameter posterior). Sensitivity analysis to a lower case fatality rate is found in the same Jupyter notebook.
 
 The `Simulation` directory contains wrappers to the `scipy.odeint` library designed to make running the model easier. 
 
-`article_plotting_adaptive.ipynb` and `article_plotting_mort.ipynb` contain more plotting code used to create figures in the publication (all figures can be found in the `Plots` directory).
+`article_plotting_final.ipynb` and `article_plotting_mort_final.ipynb` contain more plotting code used to create figures in the publication (all figures can be found in the `Plots` directory).
 
 ## ABC code
 ABC code used to fit the ODE model can be found in the `ABC` directory and used methods from Minter and Retkute, 2019 [https://doi.org/10.1016/j.epidem.2019.100368]. The resultant parameter posterior can be found in the `Posterior` directory.
