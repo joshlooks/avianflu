@@ -11,7 +11,7 @@ The branching process model code and run scripts can be found in the `bpm_final.
 
 The `Simulation` directory contains wrappers to the `scipy.odeint` library designed to make running the model easier. 
 
-`article_plotting_final.ipynb`,`article_plotting_shift.ipynb` and `article_plotting_mort_final.ipynb` contain more plotting code used to create figures in the publication (all figures can be found in the `Plots` directory).
+`article_plotting_final.ipynb`,`article_plotting_shift.ipynb`, `model_sim.py` and `article_plotting_mort_final.ipynb` contain more plotting code used to create figures in the publication (all figures can be found in the `Plots` directory).
 
 ## ABC code
 ABC code used to fit the ODE model can be found in the `ABC` directory and used methods from Minter and Retkute, 2019 [https://doi.org/10.1016/j.epidem.2019.100368]. The resultant parameter posterior can be found in the `Posterior` directory.
